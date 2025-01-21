@@ -18,7 +18,7 @@ onemonth=$(date -d "+1 month" +"%Y-%m-%d")
 
 # Check validity
 if [[ "$validity" < "$onemonth" ]]; then
-    echo "Update NOW!"
+        echo "Update NOW!"
 else
         echo "Everything is fine, the certificate is valid until:$validity"
 fi
