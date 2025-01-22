@@ -12,7 +12,7 @@ if ! command -v nmap >/dev/null 2>&1; then
         exit 1
 fi
 
-# Check if 1 argument is added
+# Check the argument
 if [[ $# -ne 1 ]]; then
         echo "Usage: $0 example.com"
         exit 1
@@ -26,7 +26,9 @@ onemonth=$(date -d "+1 month" +"%Y-%m-%d")
 
 # Check validity
 if [[ "$validity" < "$onemonth" ]]; then
-        echo "Update NOW!"
+        result="Update NOW the TLS certificate for $1!"
 else
-        echo "Everything is fine, the certificate is valid until:$validity"
+        result="Everything is fine, the TLS certificate for $1 is valid until:$validity"
 fi
+
+echo $result
