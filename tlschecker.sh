@@ -12,13 +12,13 @@ if ! command -v nmap >/dev/null 2>&1; then
         exit 1
 fi
 
-# Check the argument
+# Check number of arguments
 if [[ $# -ne 1 ]]; then
         echo "Usage: $0 example.com"
         exit 1
 fi
 
-# Check if the argument is a domain name
+# Check if argument $1 is a domain name
 if [[ $1 =~ ^([a-zA-Z0-9](([a-zA-Z0-9-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$ ]]; then
         echo "Getting the information, please be patient..."
 else
