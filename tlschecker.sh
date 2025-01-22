@@ -31,4 +31,5 @@ else
         result="Everything is fine, the TLS certificate for $1 is valid until:$validity"
 fi
 
+# Display the result and save it in a TXT file
 echo $result | tee tls_validity_$1_$(date +%F).txt
