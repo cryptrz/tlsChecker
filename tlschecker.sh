@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check Linux OS
+if [[ ! $(uname) = "Linux"  ]]; then
+        echo "This script is Linux compatible only"
+        exit
+fi
+
 # Check root user
 if [[ $(id -u) -ne 0  ]];then
         echo "Please execute as root"
