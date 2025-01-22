@@ -18,17 +18,20 @@ if [[ $# -ne 1 ]]; then
         exit 1
 fi
 
-# Check if argument $1 is a domain name
-if [[ $1 =~ ^([a-zA-Z0-9](([a-zA-Z0-9-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$ ]]; then
+# Check if argument $1 is a domain name or IP address
+valid_domain='^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$'
+valid_ip='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
+
+if [[ $1 =~ $valid_domain || $1 =~ $valid_ip ]]; then
         echo "Getting the information, please be patient..."
 else
-        echo "$1 is not a valid domain name"
+        echo "$1 is not a valid domain name or IP address"
         exit 1
 fi
 
 # Create variables
-domain=$1
-validity=$(nmap --script ssl-cert $domain | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
+target=$1
+validity=$(nmap --script ssl-cert $target | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
 onemonth=$(date -d "+1 month" +"%Y-%m-%d")
 
 # Create folder is needed
@@ -38,7 +41,7 @@ fi
 
 # Check validity, display the result and save it in a TXT file 
 if [[ "$validity" < "$onemonth" ]]; then
-        echo "Update NOW the TLS certificate for $domain!" | tee /root/tlsreports/tls_validity_$1_$(date +%F)_UPDATE_NOW.txt
+        echo "Update NOW the TLS certificate for $target!" | tee /root/tlsreports/tls_validity_$1_$(date +%F)_UPDATE_NOW.txt
 else
-        echo "Everything is fine, the TLS certificate for $domain is valid until:$validity" | tee /root/tlsreports/tls_validity_$1_$(date +%F).txt
+        echo "Everything is fine, the TLS certificate for $target is valid until:$validity" | tee /root/tlsreports/tls_validity_$1_$(date +%F).txt
 fi
