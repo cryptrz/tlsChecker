@@ -23,6 +23,10 @@ if ! command -v nmap >/dev/null 2>&1; then
 	elif command -v dnf >/dev/null 2>&1; then
                 echo "Installing nmap..."; sleep 1
                 dnf install nmap -y
+	# Auto-install for SUSE / openSUSE distributions
+        elif command -v zypper >/dev/null 2>&1; then
+                echo "Installing nmap..."; sleep 1
+                zypper install nmap -y
 	else
         	exit 1
 	fi
