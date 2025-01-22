@@ -17,19 +17,18 @@ if ! command -v nmap >/dev/null 2>&1; then
         echo "nmap is required for using this program"
 	# Auto-install for Debian-based distributions (Ubuntu, Mint, etc...)
 	if command -v apt >/dev/null 2>&1; then
-		echo "Installing nmap..."; sleep 1
-		apt install nmap -y
+		package=apt
 	# Auto-install for Fedora-based distributions (CentOS, Red Hat, etc...)
 	elif command -v dnf >/dev/null 2>&1; then
-                echo "Installing nmap..."; sleep 1
-                dnf install nmap -y
+                package=dnf
 	# Auto-install for SUSE / openSUSE-based distributions (GeckoLinux, Kamarada, etc...)
         elif command -v zypper >/dev/null 2>&1; then
-                echo "Installing nmap..."; sleep 1
-                zypper install nmap -y
+                package=zypper
 	else
         	exit 1
 	fi
+        echo "Installing nmap..."; sleep 1
+        $package install nmap -y
 fi
 
 # Check number of arguments
