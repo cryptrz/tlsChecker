@@ -18,7 +18,15 @@ if [[ $# -ne 1 ]]; then
         exit 1
 fi
 
-echo "Getting the information, please be patient..."
+# Check if the argument is a domain name
+domain=$1
+
+if [[ $domain =~ ^([a-zA-Z0-9](([a-zA-Z0-9-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$ ]]; then
+        echo "Getting the information, please be patient..."
+else
+        echo "$domain is not a valid domain name"
+        exit 1
+fi
 
 # Create variables
 validity=$(nmap --script ssl-cert $1 | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
