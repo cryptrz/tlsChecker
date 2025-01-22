@@ -31,12 +31,14 @@ domain=$1
 validity=$(nmap --script ssl-cert $domain | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
 onemonth=$(date -d "+1 month" +"%Y-%m-%d")
 
-# Check validity
-if [[ "$validity" < "$onemonth" ]]; then
-        result="Update NOW the TLS certificate for $domain!"
-else
-        result="Everything is fine, the TLS certificate for $domain is valid until:$validity"
+# Create folder is needed
+if [[ ! -d "/root/tlsreports" ]]; then
+        mkdir /root/tlsreports
 fi
 
-# Display the result and save it in a TXT file
-echo $result | tee tls_validity_$1_$(date +%F).txt
+# Check validity, display the result and save it in a TXT file 
+if [[ "$validity" < "$onemonth" ]]; then
+        echo "Update NOW the TLS certificate for $domain!" | tee /root/tlsreports/tls_validity_$1_$(date +%F)_UPDATE_NOW.txt
+else
+        echo "Everything is fine, the TLS certificate for $domain is valid until:$validity" | tee /root/tlsreports/tls_validity_$1_$(date +%F).txt
+fi
