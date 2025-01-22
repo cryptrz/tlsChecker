@@ -15,7 +15,17 @@ fi
 # Check nmap
 if ! command -v nmap >/dev/null 2>&1; then
         echo "nmap is required for using this program"
-        exit 1
+	# Auto-install for Debian-based distributions (Ubuntu, Mint, etc...)
+	if command -v apt >/dev/null 2>&1; then
+		echo "Installing nmap..."; sleep 1
+		apt install nmap -y
+	# Auto-install for Fedora-based distributions (CentOS, Red Hat, etc...)
+	elif command -v dnf >/dev/null 2>&1; then
+                echo "Installing nmap..."; sleep 1
+                dnf install nmap -y
+	else
+        	exit 1
+	fi
 fi
 
 # Check number of arguments
@@ -30,9 +40,9 @@ valid_ip='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
 
 if [[ $1 =~ $valid_domain || $1 =~ $valid_ip ]]; then
         target=$1
-        echo "Getting the information for $target, please be patient..."
+        echo -e "\nGetting the information for $target, please be patient..."
 else
-        echo "$1 is not a valid domain name or IP address"
+        echo -e "\n$1 is not a valid domain name or IP address\n"
         exit 1
 fi
 
