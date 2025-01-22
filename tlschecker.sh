@@ -23,14 +23,14 @@ valid_domain='^([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$'
 valid_ip='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
 
 if [[ $1 =~ $valid_domain || $1 =~ $valid_ip ]]; then
-        echo "Getting the information, please be patient..."
+        target=$1
+        echo "Getting the information for $target, please be patient..."
 else
         echo "$1 is not a valid domain name or IP address"
         exit 1
 fi
 
-# Create variables
-target=$1
+# Create variables for validity date and date in 1 month from now
 validity=$(nmap --script ssl-cert $target | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
 onemonth=$(date -d "+1 month" +"%Y-%m-%d")
 
