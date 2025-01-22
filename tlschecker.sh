@@ -19,24 +19,23 @@ if [[ $# -ne 1 ]]; then
 fi
 
 # Check if the argument is a domain name
-domain=$1
-
-if [[ $domain =~ ^([a-zA-Z0-9](([a-zA-Z0-9-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$ ]]; then
+if [[ $1 =~ ^([a-zA-Z0-9](([a-zA-Z0-9-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$ ]]; then
         echo "Getting the information, please be patient..."
 else
-        echo "$domain is not a valid domain name"
+        echo "$1 is not a valid domain name"
         exit 1
 fi
 
 # Create variables
-validity=$(nmap --script ssl-cert $1 | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
+domain=$1
+validity=$(nmap --script ssl-cert $domain | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
 onemonth=$(date -d "+1 month" +"%Y-%m-%d")
 
 # Check validity
 if [[ "$validity" < "$onemonth" ]]; then
-        result="Update NOW the TLS certificate for $1!"
+        result="Update NOW the TLS certificate for $domain!"
 else
-        result="Everything is fine, the TLS certificate for $1 is valid until:$validity"
+        result="Everything is fine, the TLS certificate for $domain is valid until:$validity"
 fi
 
 # Display the result and save it in a TXT file
