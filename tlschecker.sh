@@ -34,14 +34,14 @@ fi
 validity=$(nmap --script ssl-cert $target | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
 onemonth=$(date -d "+1 month" +"%Y-%m-%d")
 
-# Create folder is needed
-if [[ ! -d "/root/tlsreports" ]]; then
-        mkdir /root/tlsreports
+# Create the TLS_Reports folder if needed
+if [[ ! -d "/root/TLS_Reports" ]]; then
+        mkdir /root/TLS_Reports
 fi
 
 # Check validity, display the result and save it in a TXT file 
 if [[ "$validity" < "$onemonth" ]]; then
-        echo "Update NOW the TLS certificate for $target!" | tee /root/tlsreports/tls_validity_$1_$(date +%F)_UPDATE_NOW.txt
+        echo "Update NOW the TLS certificate for $target!" | tee /root/TLS_Reports/tls_validity_$1_$(date +%F)_UPDATE_NOW.txt
 else
-        echo "Everything is fine, the TLS certificate for $target is valid until:$validity" | tee /root/tlsreports/tls_validity_$1_$(date +%F).txt
+        echo "Everything is fine, the TLS certificate for $target is valid until:$validity" | tee /root/TLS_Reports/tls_validity_$1_$(date +%F).txt
 fi
