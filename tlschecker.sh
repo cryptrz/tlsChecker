@@ -12,16 +12,16 @@ if [[ $(id -u) -ne 0  ]];then
         exit 1
 fi
 
-# Check nmap
+# Check if nmap is not installed
 if ! command -v nmap >/dev/null 2>&1; then
         echo "nmap is required for using this program"
-	# Auto-install for Debian-based distributions (Ubuntu, Mint, etc...)
+	# Package manager for Debian-based distributions (Ubuntu, Mint, etc...)
 	if command -v apt >/dev/null 2>&1; then
 		packagemanager=apt
-	# Auto-install for Fedora-based distributions (CentOS, Red Hat, etc...)
+	# Package manager for Fedora-based distributions (CentOS, Red Hat, etc...)
 	elif command -v dnf >/dev/null 2>&1; then
                 packagemanager=dnf
-	# Auto-install for SUSE / openSUSE-based distributions (GeckoLinux, Kamarada, etc...)
+	# Package manager for SUSE / openSUSE-based distributions (GeckoLinux, Kamarada, etc...)
         elif command -v zypper >/dev/null 2>&1; then
                 packagemanager=zypper
 	else
