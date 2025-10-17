@@ -50,7 +50,7 @@ else
 fi
 
 # Create variables for validity date and date in 1 month from now
-validity=$(nmap --script ssl-cert $target | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
+validity=$(nmap -p 443 --script ssl-cert $target | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
 onemonth=$(date -d "+1 month" +"%Y-%m-%d")
 
 # Create the TLS_Reports folder if needed
