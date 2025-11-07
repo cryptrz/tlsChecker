@@ -2,7 +2,7 @@
 **tlschecker.sh** verfies the validity of the **TLS certificate** for a given domain name or IP address.
 
 # Requirements
-For using **tlschecker.sh**, you need to install **nmap**: 
+For using **tlschecker-btw.sh**, **nmap** is required (It's installed automatically if needed): 
 https://nmap.org/download
 
 # Usage
