@@ -1,5 +1,7 @@
 # Description
-**tlschecker.sh** verfies the validity of the **TLS certificate** for a given domain name or IP address.
+**tlschecker.sh** is compatible with **Debian-based**, **Fedora-based** and **openSUSE-based systems**. It verfies the validity of the **TLS certificate** for a given domain name or IP address.
+
+For **Arch Linux**, please use this version: https://github.com/cryptrz/tlsChecker-btw
 
 # Requirements
 For using **tlschecker-btw.sh**, **nmap** is required (It's installed automatically if needed): 
