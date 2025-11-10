@@ -49,8 +49,7 @@ else
         exit 1
 fi
 
-# Create variables for validity date and date in 1 month from now
-validity=$(nmap -p 443 --script ssl-cert $target | grep "Not valid after" | cut -d ":" -f 2 | cut -d "T" -f 1)
+# Create variable for date in 1 month from now
 onemonth=$(date -d "+1 month" +"%Y-%m-%d")
 
 # Create the TLS_Reports folder if needed
@@ -58,9 +57,12 @@ if [[ ! -d "/root/TLS_Reports" ]]; then
         mkdir /root/TLS_Reports
 fi
 
-# Check validity, display the result and save it in a TXT file 
-if [[ "$validity" < "$onemonth" ]]; then
-        echo "Update NOW the TLS certificate for $target!" | tee /root/TLS_Reports/tls_validity_$1_$(date +%F)_UPDATE_NOW.txt
-else
-        echo "Everything is fine, the TLS certificate for $target is valid until:$validity" | tee /root/TLS_Reports/tls_validity_$1_$(date +%F).txt
-fi
+# Check validity for each port, display the result and save it in a TXT file 
+nmap --script ssl-cert $target | awk '/^[0-9]+\/tcp.*open/ {port=$1; sub(/\/tcp/, "", port)} /Not valid after/ && port {print port":"$0}' | while IFS=: read -r port line; do
+        validity=$(echo "$line" | cut -d ":" -f 2 | cut -d "T" -f 1)
+        if [[ "$validity" < "$onemonth" ]]; then
+                echo "Port $port: Update NOW the TLS certificate for $target!" | tee -a /root/TLS_Reports/tls_validity_$1_$(date +%F)_UPDATE_NOW.txt
+        else
+                echo "Port $port: Everything is fine, the TLS certificate for $target is valid until:$validity" | tee -a /root/TLS_Reports/tls_validity_$1_$(date +%F).txt
+        fi
+done
