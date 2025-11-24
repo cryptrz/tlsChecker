@@ -4,7 +4,7 @@
 For **Arch Linux**, please use this version: https://github.com/cryptrz/tlsChecker-btw
 
 # Requirements
-For using **tlschecker-btw.sh**, **nmap** is required (It's installed automatically if needed): 
+For using **tlschecker.sh**, **nmap** is required (It's installed automatically if needed): 
 https://nmap.org/download
 
 # Usage
