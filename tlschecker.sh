@@ -61,7 +61,7 @@ fi
 nmap --script ssl-cert $target | awk '/^[0-9]+\/tcp.*open/ {port=$1; sub(/\/tcp/, "", port)} /Not valid after/ && port {print port":"$0}' | while IFS=: read -r port line; do
         validity=$(echo "$line" | cut -d ":" -f 2 | cut -d "T" -f 1)
         if [[ "$validity" < "$onemonth" ]]; then
-                echo "Port $port: Update NOW the TLS certificate for $target!" | tee -a /root/TLS_Reports/tls_validity_$1_$(date +%F)_UPDATE_NOW.txt
+                echo "Port $port: Update NOW the TLS certificate for $target! It expires on:$validity" | tee -a /root/TLS_Reports/tls_validity_$1_$(date +%F)_UPDATE_NOW.txt
         else
                 echo "Port $port: Everything is fine, the TLS certificate for $target is valid until:$validity" | tee -a /root/TLS_Reports/tls_validity_$1_$(date +%F).txt
         fi
